@@ -10,11 +10,11 @@ import java.util.List;
 public class ListCommand implements Runnable {
 
     public void run() {
-        //TODO 直接使用绝对路径
-        String inputPath = "D:/Code/Codegen-generator/generator-demo-projects/acm-template";
+        String rootPath = System.getProperty("user.dir");
+        String inputPath = rootPath+"/generator-demo-projects/acm-template";
         List<File> files = FileUtil.loopFiles(inputPath);
         for (File file : files) {
-            System.out.println(file.getName());
+            System.out.println(file);
         }
     }
 

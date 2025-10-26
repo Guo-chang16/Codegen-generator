@@ -1,8 +1,6 @@
 package com.guochang.generator;
 
 import cn.hutool.extra.template.TemplateException;
-import com.guochang.generator.DynamicGenerator;
-import com.guochang.generator.StaticGenerator;
 
 import java.io.File;
 import java.io.IOException;
