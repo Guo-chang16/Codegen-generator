@@ -1,33 +1,48 @@
 package com.guochang.generator;
 
-import com.guochang.model.MainTemplateConfig;
-import freemarker.template.TemplateException;
+import cn.hutool.extra.template.TemplateException;
+import com.guochang.generator.DynamicGenerator;
+import com.guochang.generator.StaticGenerator;
 
 import java.io.File;
 import java.io.IOException;
 
 public class MainGenerator {
 
-    public static void main(String[] args) throws TemplateException, IOException {
-        MainTemplateConfig mainTemplateConfig = new MainTemplateConfig();
-        mainTemplateConfig.setAuthor("yupi");
-        mainTemplateConfig.setLoop(false);
-        mainTemplateConfig.setOutputText("求和结果：");
-        doGenerate(mainTemplateConfig);
-    }
+    public static void doGenerate(Object model) throws IOException, TemplateException, freemarker.template.TemplateException {
+        // 项目根目录
+        String rootPath = System.getProperty("user.dir");
 
-    private static void doGenerate(Object model) throws IOException, TemplateException {
-        //静态文件生成
-        String projectPath = System.getProperty("user.dir");
-        String inputPath = projectPath+ File.separator + "generator-demo-projects" + File.separator + "acm-template";
-        String outputPath=projectPath;
-        StaticGenerator.copyFilesByRecursive(inputPath,outputPath);
+        // 静态文件生成
+        String inputPath = rootPath + "/generator-demo-projects/acm-template";
+        String outputPath = rootPath;
 
-        //动态文件生成
-        String inputDynamicFilePath = projectPath + File.separator + "basic-generator" + File.separator + "src/main/resources/templates/MainTemplate.java.ftl";
-        String outputDynamicFilePath = outputPath + File.separator + "acm-template/src/com/yupi/acm/MainTemplate.java";
+        // 验证静态模板目录
+        File inputDir = new File(inputPath);
+        if (!inputDir.exists()) {
+            return;
+        }
+
+        // 复制静态文件
+        StaticGenerator.copyFilesByRecursive(inputPath, outputPath);
+
+        // 动态文件生成
+        String inputDynamicFilePath = rootPath + "/basic-generator/src/main/resources/templates/MainTemplate.java.ftl";
+        String outputDynamicFilePath = rootPath + "/generator-demo-projects/acm-template/src/com/yupi/acm/MainTemplate.java";
+
+        // 验证动态模板文件
+        File templateFile = new File(inputDynamicFilePath);
+        if (!templateFile.exists()) {
+            return;
+        }
+
+        // 确保输出目录存在
+        File outputDir = new File(outputDynamicFilePath).getParentFile();
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+
+        // 生成动态文件
         DynamicGenerator.doGenerate(inputDynamicFilePath, outputDynamicFilePath, model);
     }
-
-
 }
