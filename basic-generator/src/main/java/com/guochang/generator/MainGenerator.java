@@ -10,7 +10,7 @@ public class MainGenerator {
     public static void doGenerate(Object model) throws IOException, TemplateException, freemarker.template.TemplateException {
         // 项目根目录
         String rootPath = System.getProperty("user.dir");
-
+        System.out.println(rootPath);
         // 静态文件生成
         String inputPath = rootPath + "/generator-demo-projects/acm-template";
         String outputPath = rootPath;
